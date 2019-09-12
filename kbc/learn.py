@@ -444,13 +444,13 @@ if run_pre_train_flag:
     del pre_train_optim
     del pre_train_optimizer
 
-    if args.model == 'Context_CP' or args.model == 'Context_CP_v2':
+    if args.model == 'Contact':
         if os.path.exists(pre_train_folder + 'lhs.pt'):
             model.lhs.load_state_dict(torch.load(pre_train_folder + '/lhs.pt'))
             model.rel.load_state_dict(torch.load(pre_train_folder + '/rel.pt'))
             model.rhs.load_state_dict(torch.load(pre_train_folder + '/rhs.pt'))
 
-    elif args.model == 'Context_ComplEx' or args.model == 'Context_ComplEx_v2' or args.model == 'Context_ComplEx_v3':
+    elif args.model == 'ContExt':
         if os.path.exists(pre_train_folder + 'entity.pt'):
             model.embeddings[0].load_state_dict(torch.load(pre_train_folder + '/entity.pt'))
             model.embeddings[1].load_state_dict(torch.load(pre_train_folder + '/relation.pt'))
@@ -500,7 +500,6 @@ for e in range(args.max_epochs):
 
         forward_g.append(model.g.clone().data.cpu().numpy())
         forward_alpha.append(model.alpha.clone().data.cpu().numpy())
-
 
         if (e+1) % (args.valid * 3) == 0:
             np.save(folder_name + '/forward_g', np.array(forward_g))
